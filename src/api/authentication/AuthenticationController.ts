@@ -1,7 +1,6 @@
-import AuthenticateUser from '../../application/use_cases/AuthenticateUser';
-import {TYPES} from '../../constants/types';
-import {Request, Response, NextFunction} from 'express';
+import {NextFunction, Request, Response} from 'express';
 import {StatusCodes} from 'http-status-codes';
+import {inject} from 'inversify';
 import {
   controller,
   httpPost,
@@ -9,7 +8,8 @@ import {
   request,
   response,
 } from 'inversify-express-utils';
-import {inject} from 'inversify';
+import AuthenticateUser from '../../application/use_cases/AuthenticateUser';
+import {TYPES} from '../../constants/types';
 import schemaValidator from '../../middleware/schemaValidator';
 import {authenticateUserSchema} from './schemas/input/authenticationSchemas';
 

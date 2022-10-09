@@ -1,5 +1,5 @@
+import {ReasonPhrases, StatusCodes} from 'http-status-codes';
 import CustomError from '../../shared/error/CustomError';
-import {StatusCodes, ReasonPhrases} from 'http-status-codes';
 import ErrorCode from './ErrorCode';
 
 export class UserNotFound extends CustomError {

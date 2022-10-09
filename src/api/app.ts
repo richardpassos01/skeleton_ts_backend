@@ -1,11 +1,11 @@
-import 'reflect-metadata';
-import {InversifyExpressServer} from 'inversify-express-utils';
-import * as express from 'express';
-import * as cors from 'cors';
 import * as compression from 'compression';
-import * as morgan from 'morgan';
-import container from '../DependencyInjectionContainer';
+import * as cors from 'cors';
+import * as express from 'express';
 import {ReasonPhrases, StatusCodes} from 'http-status-codes';
+import {InversifyExpressServer} from 'inversify-express-utils';
+import * as morgan from 'morgan';
+import 'reflect-metadata';
+import container from '../DependencyInjectionContainer';
 import errorHandler from '../middleware/errorHandler';
 
 export const PREFIX_API = '/api/v1';

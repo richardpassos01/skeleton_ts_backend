@@ -1,9 +1,9 @@
-import {Request, Response, NextFunction} from 'express';
-import * as jsonwebtoken from 'jsonwebtoken';
+import {NextFunction, Request, Response} from 'express';
 import {ReasonPhrases, StatusCodes} from 'http-status-codes';
-import Settings from '../settings/Settings';
+import * as jsonwebtoken from 'jsonwebtoken';
 import CustomError from '../domain/shared/error/CustomError';
 import ErrorCode from '../domain/shared/error/ErrorCode';
+import Settings from '../settings/Settings';
 
 interface AuthRequest extends Request {
   user?: string | jsonwebtoken.JwtPayload;

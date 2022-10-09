@@ -4,16 +4,16 @@ import UserRepositoryInterface from './domain/user/repositories/UserRepositoryIn
 
 import Database from './infrastructure/database';
 
-import UserController from './api/user/UserController';
-import AuthenticationController from './api/authentication/AuthenticationController';
+import AuthenticationController from '@api/authentication/AuthenticationController';
+import UserController from '@api/user/UserController';
 
-import CreateUser from './application/use_cases/CreateUser';
 import AuthenticateUser from './application/use_cases/AuthenticateUser';
+import CreateUser from './application/use_cases/CreateUser';
 import UpdateUserPassword from './application/use_cases/UpdateUserPassword';
 
-import UserRepository from './infrastructure/repositories/UserRepository';
-import {TYPES} from './constants/types';
 import FetchUserByEmail from './application/queries/FetchUserByEmail';
+import {TYPES} from './constants/types';
+import UserRepository from './infrastructure/repositories/UserRepository';
 
 const container = new Container();
 

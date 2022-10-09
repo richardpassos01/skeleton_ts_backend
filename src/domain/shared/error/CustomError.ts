@@ -1,5 +1,5 @@
+import {ReasonPhrases, StatusCodes} from 'http-status-codes';
 import * as Joi from 'joi';
-import {StatusCodes, ReasonPhrases} from 'http-status-codes';
 import ErrorCode from './ErrorCode';
 
 export default class CustomError extends Error {

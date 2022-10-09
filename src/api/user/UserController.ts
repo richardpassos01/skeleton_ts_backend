@@ -1,9 +1,6 @@
-import AuthenticateUser from '../../application/use_cases/AuthenticateUser';
-import CreateUser from '../../application/use_cases/CreateUser';
-import UpdateUserPassword from '../../application/use_cases/UpdateUserPassword';
-import {TYPES} from '../../constants/types';
-import {Request, Response, NextFunction} from 'express';
-import {StatusCodes, ReasonPhrases} from 'http-status-codes';
+import {NextFunction, Request, Response} from 'express';
+import {ReasonPhrases, StatusCodes} from 'http-status-codes';
+import {inject} from 'inversify';
 import {
   controller,
   httpPatch,
@@ -12,13 +9,16 @@ import {
   request,
   response,
 } from 'inversify-express-utils';
-import {inject} from 'inversify';
+import AuthenticateUser from '../../application/use_cases/AuthenticateUser';
+import CreateUser from '../../application/use_cases/CreateUser';
+import UpdateUserPassword from '../../application/use_cases/UpdateUserPassword';
+import {TYPES} from '../../constants/types';
+import authentication from '../../middleware/authentication';
+import schemaValidator from '../../middleware/schemaValidator';
 import {
   createUserSchema,
   updatePasswordSchema,
 } from './schemas/input/userSchemas';
-import schemaValidator from '../../middleware/schemaValidator';
-import authentication from '../../middleware/authentication';
 
 @controller('/user')
 class UserController {

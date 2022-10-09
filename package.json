@@ -17,6 +17,7 @@
     "morgan": "^1.10.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.2",
+    "update": "^0.7.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -33,19 +34,18 @@
     "gts": "^3.1.1",
     "jest": "^26.4.2",
     "lint-staged": "^10.3.0",
+    "prettier-plugin-organize-imports": "^3.1.1",
     "supertest": "^4.0.2",
     "ts-jest": "^26.3.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^1.0.0-pre.62",
     "tsconfig-paths": "^3.9.0",
-    "tscpaths": "^0.0.9",
     "typescript": "~4.7.0"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./build",
-    "start": "npm run build && node build/src/api/server.js",
+    "start": "cross-env NODE_ENV=production ACCESS_TOKEN_SECRET=1 ACCESS_TOKEN_EXPIRES_IN_HOURS=24 PORT=9000 node build/src/api/server.js",
     "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts",
-    "test": "cross-env NODE_ENV=test PORT=9090 jest --setupFiles dotenv/config  --forceExit --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config  --forceExit --detectOpenHandles",
     "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
     "migration:create": "npm run knex migrate:make",
     "migration:up": "npm run knex migrate:latest",
