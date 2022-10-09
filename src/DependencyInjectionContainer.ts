@@ -5,35 +5,50 @@ import UserRepositoryInterface from './domain/user/repositories/UserRepositoryIn
 import Database from './infrastructure/database';
 
 import UserController from './api/user/UserController';
+import AuthenticationController from './api/authentication/AuthenticationController';
 
 import CreateUser from './application/use_cases/CreateUser';
 import AuthenticateUser from './application/use_cases/AuthenticateUser';
 import UpdateUserPassword from './application/use_cases/UpdateUserPassword';
 
 import UserRepository from './infrastructure/repositories/UserRepository';
+import {TYPES} from './constants/types';
+import FetchUserByEmail from './application/queries/FetchUserByEmail';
 
-import Settings from './settings/Settings';
- 
 const container = new Container();
 
 container
-  .bind<UserRepositoryInterface>(Symbol.for('UserRepositoryInterface'))
+  .bind<UserRepositoryInterface>(TYPES.UserRepository)
   .to(UserRepository)
   .inSingletonScope();
 
-const database = Database.getInstance();
+container.bind<Database>(TYPES.Database).to(Database).inSingletonScope();
 
-const userRepository = new UserRepository(database);
+container.bind<CreateUser>(TYPES.CreateUser).to(CreateUser).inSingletonScope();
 
-const createUser = new CreateUser(userRepository);
-const authenticateUser = new AuthenticateUser(userRepository);
-const updateUserPassword = new UpdateUserPassword(userRepository);
+container
+  .bind<AuthenticateUser>(TYPES.AuthenticateUser)
+  .to(AuthenticateUser)
+  .inSingletonScope();
 
-const userController = new UserController(
-  createUser,
-  authenticateUser,
-  updateUserPassword
-);
+container
+  .bind<UpdateUserPassword>(TYPES.UpdateUserPassword)
+  .to(UpdateUserPassword)
+  .inSingletonScope();
 
-export {database, userController, userRepository, authenticateUser};
+container
+  .bind<FetchUserByEmail>(TYPES.FetchUserByEmail)
+  .to(FetchUserByEmail)
+  .inSingletonScope();
+
+container
+  .bind<UserController>(TYPES.UserController)
+  .to(UserController)
+  .inSingletonScope();
+
+container
+  .bind<AuthenticationController>(TYPES.AuthenticationController)
+  .to(AuthenticationController)
+  .inSingletonScope();
+
 export default container;

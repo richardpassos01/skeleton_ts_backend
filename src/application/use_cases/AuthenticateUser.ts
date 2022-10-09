@@ -1,40 +1,30 @@
 import * as jsonwebtoken from 'jsonwebtoken';
-import {jwt} from '../../config';
-import User from '../../domain/user/User';
-import UserRepositoryInterface from '../../domain/user/repositories/UserRepositoryInterface';
+import Settings from '../../settings/Settings';
+import {inject, injectable} from 'inversify';
+import {TYPES} from '../../constants/types';
+import Authentication from '../../domain/authentication/Authentication';
+import FetchUserByEmail from '../../application/queries/FetchUserByEmail';
 
+@injectable()
 class AuthenticateUser {
-  constructor(private readonly userRepository: UserRepositoryInterface) {}
+  constructor(
+    @inject(TYPES.FetchUserByEmail)
+    private readonly fetchUserByEmail: FetchUserByEmail
+  ) {}
 
-  async execute(email: string, password: string) {
-    const data = await this.userRepository.findByEmail(email);
-
-    if (!data.length) {
-      throw new Error('User not found');
-    }
-
-    const [{name, id, salt, hash}] = data;
-
-    const user = new User(name, email, id, salt, hash);
-    const isValidPassword = user.checkPassword(password);
-
-    if (!isValidPassword) {
-      throw new Error('Invalid password or identifier');
-    }
+  async execute(email: string, password: string): Promise<Authentication> {
+    const user = await this.fetchUserByEmail.execute(email);
+    user.checkPassword(password);
 
     const accessToken = jsonwebtoken.sign(
-      {name, id, email},
-      jwt.accessTokenSecret,
+      {name: user.name, id: user.id, email: user.email},
+      Settings.accessTokenSecret,
       {
-        expiresIn: jwt.timeToExpireAccessToken,
+        expiresIn: Settings.timeToExpireAccessToken,
       }
     );
 
-    return {
-      token_type: 'bearer',
-      access_token: accessToken,
-      access_token_expires_in: jwt.timeToExpireAccessToken,
-    };
+    return new Authentication(accessToken);
   }
 }
 

@@ -1,12 +1,11 @@
 import * as Knex from 'knex';
-
-import database from '../../../config/database';
+import Tables from '../Tables';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.hasTable(database.tables.users).then(exists => {
+  return knex.schema.hasTable(Tables.USERS).then(exists => {
     if (!exists) {
       knex.schema
-        .createTable(database.tables.users, table => {
+        .createTable(Tables.USERS, table => {
           table.uuid('id').primary();
           table.string('name', 350).notNullable();
           table.string('email', 50).unique().notNullable();
@@ -21,5 +20,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable(database.tables.users);
+  return knex.schema.dropTable(Tables.USERS);
 }

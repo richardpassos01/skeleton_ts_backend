@@ -1,12 +1,11 @@
 import * as Knex from 'knex';
-
-import database from '../../../config/database';
+import Tables from '../Tables';
 
 export async function seed(knex: Knex): Promise<void> {
-  return knex(database.tables.users)
+  return knex(Tables.USERS)
     .del()
     .then(() => {
-      return knex(database.tables.users).insert([
+      return knex(Tables.USERS).insert([
         {
           id: 'c1daef5f-4bd0-4616-bb62-794e9b5d8ca2',
           name: 'admin',

@@ -1,7 +1,7 @@
-import {UserInterface} from '../User';
+import User from '../User';
 
 export default interface UserRepositoryInterface {
-  create(user: UserInterface): Promise<void>;
-  update(user: UserInterface): Promise<void>;
-  findByEmail(email: string): Promise<UserInterface[]>;
+  create(user: User): Promise<void>;
+  update(user: User): Promise<void>;
+  findByEmail(email: string): Promise<User | null>;
 }

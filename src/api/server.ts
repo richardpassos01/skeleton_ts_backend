@@ -1,8 +1,7 @@
-import * as Config from '../config';
+import Settings from '../settings/Settings';
 import app from './app';
 
-const server = app.listen(Config.application.port, () => {
-  console.log(`Server running on port ${Config.application.port}`);
+const server = app.build();
+server.listen(Settings.port, () => {
+  console.log(`server started at http://localhost:${Settings.port}`);
 });
-
-export default server;

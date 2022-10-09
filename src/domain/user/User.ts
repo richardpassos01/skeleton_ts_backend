@@ -1,31 +1,34 @@
 import {v4 as uuid} from 'uuid';
 import * as crypto from 'crypto';
+import {InvalidCredentials} from './error/UserErrors';
 
-export interface UserInterface {
-  name: string;
-  email: string;
+export interface UserParams {
+  name: string | undefined;
+  email: string | undefined;
   id: string;
-  salt: string | null;
-  hash: string | null;
+  salt: string | undefined;
+  hash: string | undefined;
 }
 
-class User implements UserInterface {
-  constructor(
-    readonly name: string,
-    readonly email: string,
-    readonly id: string = uuid(),
-    public salt: string | null = null,
-    public hash: string | null = null
-  ) {}
+class User {
+  public id: string = uuid();
+  public name: string | undefined;
+  public email: string | undefined;
+  public salt: string | undefined;
+  public hash: string | undefined;
 
-  setPassword(password: string) {
+  constructor(params: UserParams) {
+    Object.assign(this, params);
+  }
+
+  setPassword(password: string): void {
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto
       .pbkdf2Sync(password, this.salt, 1000, 64, 'sha512')
       .toString('hex');
   }
 
-  checkPassword(password: string) {
+  checkPassword(password: string): void {
     if (!this.salt) {
       throw new Error('Password not provided');
     }
@@ -34,7 +37,7 @@ class User implements UserInterface {
       .pbkdf2Sync(password, this.salt, 1000, 64, 'sha512')
       .toString('hex');
 
-    return this.hash === hash;
+    if (this.hash !== hash) throw new InvalidCredentials();
   }
 }
 

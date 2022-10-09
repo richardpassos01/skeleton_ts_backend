@@ -1,28 +1,24 @@
+import {injectable} from 'inversify';
 import * as Knex from 'knex';
-import knexConfig from '../../../knexfile';
+import Settings from '../../settings/Settings';
 
+@injectable()
 class Database {
-  private static instance: Database;
+  private instance: Knex;
 
-  private constructor(private readonly knexInstance: Knex) {}
-
-  static getInstance() {
-    if (!Database.instance) {
-      Database.instance = new Database(Knex(knexConfig));
-      Database.instance.checkConnection();
-    }
-
-    return Database.instance;
+  constructor() {
+    this.instance = Knex(Settings.database);
+    this.checkConnection();
   }
 
-  async checkConnection() {
-    return this.knexInstance.select(1).then(() => {
+  async checkConnection(): Promise<void> {
+    return this.instance.select(1).then(() => {
       console.log('database connected!');
     });
   }
 
-  connection() {
-    return this.knexInstance;
+  connection(): Knex {
+    return this.instance;
   }
 }
 

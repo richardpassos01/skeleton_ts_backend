@@ -1,20 +1,29 @@
+import CustomError from '../domain/shared/error/CustomError';
 import {Request, Response, NextFunction} from 'express';
+import ErrorCode from '../domain/shared/error/ErrorCode';
 import {StatusCodes} from 'http-status-codes';
-import * as Joi from 'joi';
 
 const errorHandler = (
-  err: Joi.ValidationResult,
+  err: CustomError,
   _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
-  if (err && err.error && err.error.isJoi) {
-    res.status(StatusCodes.BAD_REQUEST).json({
-      message: err.error.toString(),
-    });
-  } else {
-    next(err);
+  let error: CustomError = new CustomError();
+
+  if (err?.error?.isJoi) {
+    error = new CustomError(
+      err.error.toString(),
+      ErrorCode.SCHEMA_VALIDATOR,
+      StatusCodes.UNPROCESSABLE_ENTITY
+    );
   }
+
+  if (err.customCode) {
+    error = err;
+  }
+
+  res.status(error.status).send(error);
 };
 
 export default errorHandler;

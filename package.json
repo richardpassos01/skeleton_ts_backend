@@ -10,6 +10,7 @@
     "express-joi-validation": "^5.0.0",
     "http-status-codes": "^2.1.4",
     "inversify": "^6.0.1",
+    "inversify-express-utils": "^6.4.3",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.21",
@@ -40,7 +41,7 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./build",
-    "start": "npm run build && node build/src/api/server.jsonwebtoken",
+    "start": "npm run build && node build/src/api/server.js",
     "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts",
     "test": "cross-env NODE_ENV=test PORT=9090 jest --setupFiles dotenv/config  --forceExit --detectOpenHandles",
     "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",

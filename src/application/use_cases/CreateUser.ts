@@ -1,14 +1,27 @@
-import UserRepositoryInterface from 'domain/user/repositories/UserRepositoryInterface';
-import User from '../../domain/user/User';
+import {TYPES} from '../../constants/types';
+import UserRepositoryInterface from '../../domain/user/repositories/UserRepositoryInterface';
+import User, {UserParams} from '../../domain/user/User';
+import {inject, injectable} from 'inversify';
+import {UserAlreadyExists} from '../../domain/user/error/UserErrors';
+import ErrorCode from '../../domain/shared/error/ErrorCode';
 
+@injectable()
 class CreateUser {
-  constructor(private readonly userRepository: UserRepositoryInterface) {}
+  constructor(
+    @inject(TYPES.UserRepository)
+    private readonly userRepository: UserRepositoryInterface
+  ) {}
 
-  async execute(name: string, email: string, password: string) {
-    const user = new User(name, email);
-    user.setPassword(password);
-
-    return this.userRepository.create(user);
+  async execute(name: string, email: string, password: string): Promise<void> {
+    try {
+      const user = new User({name, email} as UserParams);
+      user.setPassword(password);
+      await this.userRepository.create(user);
+    } catch (error: any) {
+      if (error.code === ErrorCode.UNIQUE_EXCEPTION) {
+        throw new UserAlreadyExists();
+      }
+    }
   }
 }
 

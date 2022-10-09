@@ -1,19 +1,20 @@
-import UserRepositoryInterface from 'domain/user/repositories/UserRepositoryInterface';
-import User from '../../domain/user/User';
+import {TYPES} from '../../constants/types';
+import {inject, injectable} from 'inversify';
+import UserRepositoryInterface from '../../domain/user/repositories/UserRepositoryInterface';
+import FetchUserByEmail from '../../application/queries/FetchUserByEmail';
 
+@injectable()
 class UpdateUserPassword {
-  constructor(private readonly userRepository: UserRepositoryInterface) {}
+  constructor(
+    @inject(TYPES.UserRepository)
+    private readonly userRepository: UserRepositoryInterface,
+
+    @inject(TYPES.FetchUserByEmail)
+    private readonly fetchUserByEmail: FetchUserByEmail
+  ) {}
 
   async execute(email: string, password: string) {
-    const data = await this.userRepository.findByEmail(email);
-
-    if (!data.length) {
-      throw new Error('User not found');
-    }
-    const [{name, id}] = data;
-
-    const user = new User(name, email, id);
-
+    const user = await this.fetchUserByEmail.execute(email);
     user.setPassword(password);
 
     return this.userRepository.update(user);
