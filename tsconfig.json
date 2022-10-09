@@ -3,17 +3,18 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "jest"],
     "rootDir": ".",
     "outDir": "build",
-    "baseUrl": "src",
     "paths": {
-      "@api*": ["src/api/*"],
+      "@api*": ["./src/api/*"],
       "@config": ["./src/config/index"]
     }
   },
   "include": [
     "src/**/*.ts",
+  ],
+  "exclude": [
     "test/**/*.ts"
   ]
 }

@@ -8,8 +8,10 @@ import container from '../DependencyInjectionContainer';
 import {ReasonPhrases, StatusCodes} from 'http-status-codes';
 import errorHandler from '../middleware/errorHandler';
 
+export const PREFIX_API = '/api/v1';
+
 export default new InversifyExpressServer(container, null, {
-  rootPath: '/api/v1',
+  rootPath: PREFIX_API,
 })
   .setConfig((application: express.Application) => {
     application.use(cors());

@@ -13,6 +13,20 @@
     "console": "integratedTerminal",
     "outFiles": ["${workspaceFolder}/build/**/*.js"],
     "envFile": "${workspaceRoot}/.env"
-  }
+  },
+  {
+    "name": "Jest Debug",
+    "type": "node",
+    "request": "launch",
+    "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand"
+    ],
+    "console": "integratedTerminal",
+    "internalConsoleOptions": "neverOpen",
+    "port": 9229,
+    "envFile": "${workspaceRoot}/.env"
+},
 ]
 }
