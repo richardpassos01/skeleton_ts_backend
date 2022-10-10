@@ -4,7 +4,7 @@ import container from '@dependencyInjectionContainer';
 import Database from '@infrastructure/database';
 import {StatusCodes} from 'http-status-codes';
 import 'reflect-metadata';
-import * as supertest from  'supertest';
+import supertest from 'supertest';
 import UserFactory from '../../factories/UserFactory';
 
 const request = supertest(app.build());
@@ -71,7 +71,7 @@ describe('authenticationApi', () => {
         await request
           .post(`${PREFIX_API}/user/create`)
           .send({
-            email: 'richard@email.com'
+            email: 'richard@email.com',
           })
           .expect(StatusCodes.UNPROCESSABLE_ENTITY);
       });

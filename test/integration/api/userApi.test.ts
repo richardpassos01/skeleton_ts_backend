@@ -2,21 +2,21 @@ import app, {PREFIX_API} from '@api/app';
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import Database, {Tables} from '@infrastructure/database';
-import UserFactory from '../../factories/UserFactory';
 import {StatusCodes} from 'http-status-codes';
+import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
-import * as supertest from 'supertest';
-import * as jwt from 'jsonwebtoken'
+import supertest from 'supertest';
+import UserFactory from '../../factories/UserFactory';
 
 const request = supertest(app.build());
 let database: Database;
-let token: string = 'abc';
+const token = 'abc';
 
 describe('userAPI', () => {
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
     await database.connection().migrate.latest();
-        
+
     jest.spyOn(jwt, 'verify').mockImplementation((...params) => {});
   });
 
@@ -100,13 +100,13 @@ describe('userAPI', () => {
         const user = await new UserFactory().get();
 
         await request
-        .patch(`${PREFIX_API}/user/update-password`)
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          email: user.email,
-          password: 'new_pass',
-        })
-        .expect(StatusCodes.NOT_FOUND);
+          .patch(`${PREFIX_API}/user/update-password`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            email: user.email,
+            password: 'new_pass',
+          })
+          .expect(StatusCodes.NOT_FOUND);
       });
     });
 
