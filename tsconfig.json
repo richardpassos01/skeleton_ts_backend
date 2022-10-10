@@ -16,6 +16,7 @@
       "@middleware/*": ["./src/middleware/*"],
       "@settings": ["./src/settings/index"],
       "@dependencyInjectionContainer": ["./src/DependencyInjectionContainer"],
+      "@factories/*": ["./test/factories/*"]
     }
   },
   "include": [

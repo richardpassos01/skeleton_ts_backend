@@ -72,6 +72,7 @@
       "^@infrastructure/(.*)$": "<rootDir>/src/infrastructure/$1",
       "^@constants/(.*)$": "<rootDir>/src/constants/$1",
       "^@middleware/(.*)$": "<rootDir>/src/middleware/$1",
+      "^@factories/(.*)$": "<rootDir>/test/factories/$1",
       "^@settings": "<rootDir>/src/settings/index",
       "^@dependencyInjectionContainer": "<rootDir>/src/DependencyInjectionContainer"
     },

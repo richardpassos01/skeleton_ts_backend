@@ -1,12 +1,12 @@
 import app, {PREFIX_API} from '@api/app';
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
+import UserFactory from '@factories/UserFactory';
 import Database, {Tables} from '@infrastructure/database';
 import {StatusCodes} from 'http-status-codes';
 import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
-import supertest from 'supertest';
-import UserFactory from '../../factories/UserFactory';
+import * as supertest from 'supertest';
 
 const request = supertest(app.build());
 let database: Database;
