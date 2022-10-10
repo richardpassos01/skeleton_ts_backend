@@ -1,11 +1,11 @@
-import 'reflect-metadata';
-import {TYPES} from '../../../../src/constants/types';
-import container from '../../../../src/DependencyInjectionContainer';
-import Database from '../../../../src/infrastructure/database';
-import * as supertest from 'supertest';
+import app, {PREFIX_API} from '@api/app';
+import {TYPES} from '@constants/types';
+import container from '@dependencyInjectionContainer';
+import Database from '@infrastructure/database';
 import {StatusCodes} from 'http-status-codes';
-import app, {PREFIX_API} from '../../../../src/api/app';
-import UserFactory from '../../../factories/UserFactory';
+import 'reflect-metadata';
+import * as supertest from  'supertest';
+import UserFactory from '../../factories/UserFactory';
 
 const request = supertest(app.build());
 let database: Database;
@@ -25,6 +25,7 @@ describe('authenticationApi', () => {
     describe('When called the endpoint with correct email and password', () => {
       test('then authenticate user', async () => {
         const user = await new UserFactory().getAndSave();
+
         const response = await request
           .post(`${PREFIX_API}/authentication/authenticate`)
           .send({
@@ -52,12 +53,25 @@ describe('authenticationApi', () => {
     });
 
     describe('When called the endpoint with not found user', () => {
-      test('then throw unprocessable entity error', async () => {
+      test('then throw not found error', async () => {
+        const user = await new UserFactory().get();
+
         await request
           .post(`${PREFIX_API}/authentication/authenticate`)
           .send({
-            email: 'random@email',
+            email: user.email,
             password: 'random_password',
+          })
+          .expect(StatusCodes.NOT_FOUND);
+      });
+    });
+
+    describe('When called the endpoint without invalid input', () => {
+      test('then throw unprocessable entity error', async () => {
+        await request
+          .post(`${PREFIX_API}/user/create`)
+          .send({
+            email: 'richard@email.com'
           })
           .expect(StatusCodes.UNPROCESSABLE_ENTITY);
       });

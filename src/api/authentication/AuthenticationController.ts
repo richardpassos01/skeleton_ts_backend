@@ -1,16 +1,10 @@
-import {NextFunction, Request, Response} from 'express';
+import AuthenticateUser from '@application/use_cases/AuthenticateUser';
+import {TYPES} from '@constants/types';
+import schemaValidator from '@middleware/schemaValidator';
+import {Request, Response} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import {inject} from 'inversify';
-import {
-  controller,
-  httpPost,
-  next as nextFunction,
-  request,
-  response,
-} from 'inversify-express-utils';
-import AuthenticateUser from '../../application/use_cases/AuthenticateUser';
-import {TYPES} from '../../constants/types';
-import schemaValidator from '../../middleware/schemaValidator';
+import {controller, httpPost, request, response} from 'inversify-express-utils';
 import {authenticateUserSchema} from './schemas/input/authenticationSchemas';
 
 @controller('/authentication')
@@ -21,17 +15,13 @@ class AuthenticationController {
   ) {}
 
   @httpPost('/authenticate', schemaValidator.body(authenticateUserSchema))
-  authenticate(
+  async authenticate(
     @request() req: Request,
-    @response() res: Response,
-    @nextFunction() next: NextFunction
-  ) {
+    @response() res: Response
+  ): Promise<void> {
     const {email, password} = req.body;
-
-    return this.authenticateUser
-      .execute(email, password)
-      .then(token => res.status(StatusCodes.OK).send(token))
-      .catch(next);
+    const result = await this.authenticateUser.execute(email, password);
+    res.status(StatusCodes.OK).send(result);
   }
 }
 

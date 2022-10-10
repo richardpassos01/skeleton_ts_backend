@@ -1,4 +1,4 @@
-import Settings from '../../settings/Settings';
+import {Settings} from '@settings';
 
 export default class Authentication {
   constructor(

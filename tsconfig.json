@@ -4,17 +4,21 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "types": ["reflect-metadata", "jest"],
+    "baseUrl": ".",
     "rootDir": ".",
     "outDir": "build",
     "paths": {
-      "@api*": ["./src/api/*"],
-      "@config": ["./src/config/index"]
+      "@api/*": ["./src/api/*"],
+      "@application/*": ["./src/application/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@settings": ["./src/settings/index"],
+      "@dependencyInjectionContainer": ["./src/DependencyInjectionContainer"],
     }
   },
   "include": [
     "src/**/*.ts",
-  ],
-  "exclude": [
-    "test/**/*.ts"
   ]
 }

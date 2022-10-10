@@ -1,8 +1,8 @@
+import {TYPES} from '@constants/types';
+import {UserNotFound} from '@domain/user/error/UserErrors';
+import UserRepositoryInterface from '@domain/user/repositories/UserRepositoryInterface';
+import User from '@domain/user/User';
 import {inject, injectable} from 'inversify';
-import {TYPES} from '../../constants/types';
-import {UserNotFound} from '../../domain/user/error/UserErrors';
-import UserRepositoryInterface from '../../domain/user/repositories/UserRepositoryInterface';
-import User from '../../domain/user/User';
 
 @injectable()
 class FetchUserByEmail {

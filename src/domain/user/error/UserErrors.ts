@@ -7,13 +7,11 @@ export class UserNotFound extends CustomError {
   message = ReasonPhrases.NOT_FOUND;
   status = StatusCodes.NOT_FOUND;
 }
-
-export class InvalidCredentials extends CustomError {
+export class InvalidPassword extends CustomError {
   customCode = ErrorCode.UNAUTHORIZED;
   message = ReasonPhrases.UNAUTHORIZED;
   status = StatusCodes.UNAUTHORIZED;
 }
-
 export class UserAlreadyExists extends CustomError {
   customCode = ErrorCode.ALREADY_EXISTS;
   message = ReasonPhrases.FORBIDDEN;

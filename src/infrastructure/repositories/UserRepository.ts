@@ -1,9 +1,8 @@
+import {TYPES} from '@constants/types';
+import UserRepositoryInterface from '@domain/user/repositories/UserRepositoryInterface';
+import User, {UserParams} from '@domain/user/User';
+import Database, {Tables} from '@infrastructure/database';
 import {inject, injectable} from 'inversify';
-import {TYPES} from '../../constants/types';
-import UserRepositoryInterface from '../../domain/user/repositories/UserRepositoryInterface';
-import User, {UserParams} from '../../domain/user/User';
-import Database from '../../infrastructure/database';
-import Tables from '../../infrastructure/database/Tables';
 
 @injectable()
 class UserRepository implements UserRepositoryInterface {

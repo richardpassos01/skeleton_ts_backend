@@ -1,4 +1,4 @@
-import Settings from '../settings/Settings';
+import {Settings} from '@settings';
 import app from './app';
 
 const server = app.build();

@@ -1,9 +1,9 @@
+import FetchUserByEmail from '@application/queries/FetchUserByEmail';
+import {TYPES} from '@constants/types';
+import Authentication from '@domain/authentication/Authentication';
+import {Settings} from '@settings';
 import {inject, injectable} from 'inversify';
 import * as jsonwebtoken from 'jsonwebtoken';
-import FetchUserByEmail from '../../application/queries/FetchUserByEmail';
-import {TYPES} from '../../constants/types';
-import Authentication from '../../domain/authentication/Authentication';
-import Settings from '../../settings/Settings';
 
 @injectable()
 class AuthenticateUser {

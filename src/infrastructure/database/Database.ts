@@ -1,6 +1,6 @@
+import {Settings} from '@settings';
 import {injectable} from 'inversify';
 import * as Knex from 'knex';
-import Settings from '../../settings/Settings';
 
 @injectable()
 class Database {

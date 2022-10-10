@@ -1,7 +1,7 @@
+import CustomError from '@domain/shared/error/CustomError';
+import ErrorCode from '@domain/shared/error/ErrorCode';
 import {NextFunction, Request, Response} from 'express';
 import {StatusCodes} from 'http-status-codes';
-import CustomError from '../domain/shared/error/CustomError';
-import ErrorCode from '../domain/shared/error/ErrorCode';
 
 const errorHandler = (
   err: CustomError,
@@ -9,7 +9,7 @@ const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  let error: CustomError = new CustomError();
+  let error: CustomError = err.customCode ? err : new CustomError();
 
   if (err?.error?.isJoi) {
     error = new CustomError(
@@ -17,10 +17,6 @@ const errorHandler = (
       ErrorCode.SCHEMA_VALIDATOR,
       StatusCodes.UNPROCESSABLE_ENTITY
     );
-  }
-
-  if (err.customCode) {
-    error = err;
   }
 
   res.status(error.status).send(error);

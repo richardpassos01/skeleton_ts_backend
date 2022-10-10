@@ -1,9 +1,9 @@
+import AuthenticateUser from '@application/use_cases/AuthenticateUser';
+import {TYPES} from '@constants/types';
+import container from '@dependencyInjectionContainer';
+import User, {UserParams} from '@domain/user/User';
+import UserRepository from '@infrastructure/repositories/UserRepository';
 import {v4 as uuid} from 'uuid';
-import User, {UserParams} from '../../src/domain/user/User';
-import container from '../../src/DependencyInjectionContainer';
-import UserRepository from '../../src/infrastructure/repositories/UserRepository';
-import {TYPES} from '../../src/constants/types';
-import AuthenticateUser from '../../src/application/use_cases/AuthenticateUser';
 
 class UserFactory {
   user: User;

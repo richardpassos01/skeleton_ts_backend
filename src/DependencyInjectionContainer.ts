@@ -1,19 +1,19 @@
 import {Container} from 'inversify';
 
-import UserRepositoryInterface from './domain/user/repositories/UserRepositoryInterface';
+import UserRepositoryInterface from '@domain/user/repositories/UserRepositoryInterface';
 
-import Database from './infrastructure/database';
+import Database from '@infrastructure/database';
 
-import AuthenticationController from './api/authentication/AuthenticationController';
-import UserController from './api/user/UserController';
+import AuthenticationController from '@api/authentication/AuthenticationController';
+import UserController from '@api/user/UserController';
 
-import AuthenticateUser from './application/use_cases/AuthenticateUser';
-import CreateUser from './application/use_cases/CreateUser';
-import UpdateUserPassword from './application/use_cases/UpdateUserPassword';
+import AuthenticateUser from '@application/use_cases/AuthenticateUser';
+import CreateUser from '@application/use_cases/CreateUser';
+import UpdateUserPassword from '@application/use_cases/UpdateUserPassword';
 
-import FetchUserByEmail from './application/queries/FetchUserByEmail';
-import {TYPES} from './constants/types';
-import UserRepository from './infrastructure/repositories/UserRepository';
+import FetchUserByEmail from '@application/queries/FetchUserByEmail';
+import {TYPES} from '@constants/types';
+import UserRepository from '@infrastructure/repositories/UserRepository';
 
 const container = new Container();
 

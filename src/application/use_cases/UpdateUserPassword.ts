@@ -1,7 +1,7 @@
+import FetchUserByEmail from '@application/queries/FetchUserByEmail';
+import {TYPES} from '@constants/types';
+import UserRepositoryInterface from '@domain/user/repositories/UserRepositoryInterface';
 import {inject, injectable} from 'inversify';
-import FetchUserByEmail from '../../application/queries/FetchUserByEmail';
-import {TYPES} from '../../constants/types';
-import UserRepositoryInterface from '../../domain/user/repositories/UserRepositoryInterface';
 
 @injectable()
 class UpdateUserPassword {

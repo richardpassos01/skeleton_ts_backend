@@ -9,7 +9,7 @@
     "request": "launch",
     "name": "TS API",
     "program": "${workspaceFolder}/src/api/server.ts",
-    "preLaunchTask": "npm: build",
+    "preLaunchTask": "npm: compile",
     "console": "integratedTerminal",
     "outFiles": ["${workspaceFolder}/build/**/*.js"],
     "envFile": "${workspaceRoot}/.env"

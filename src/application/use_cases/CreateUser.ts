@@ -1,9 +1,9 @@
+import {TYPES} from '@constants/types';
+import ErrorCode from '@domain/shared/error/ErrorCode';
+import {UserAlreadyExists} from '@domain/user/error/UserErrors';
+import UserRepositoryInterface from '@domain/user/repositories/UserRepositoryInterface';
+import User, {UserParams} from '@domain/user/User';
 import {inject, injectable} from 'inversify';
-import {TYPES} from '../../constants/types';
-import ErrorCode from '../../domain/shared/error/ErrorCode';
-import {UserAlreadyExists} from '../../domain/user/error/UserErrors';
-import UserRepositoryInterface from '../../domain/user/repositories/UserRepositoryInterface';
-import User, {UserParams} from '../../domain/user/User';
 
 @injectable()
 class CreateUser {
