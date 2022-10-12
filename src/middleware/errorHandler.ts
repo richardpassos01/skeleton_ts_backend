@@ -1,16 +1,15 @@
-import * as Koa from 'koa';
-
 import CustomError from '@domain/shared/error/CustomError';
+import {NextFunction, Request, Response} from 'express';
 
-const errorHandler = async (ctx: Koa.Context, next: Koa.Next) => {
-  try {
-    await next();
-  } catch (err) {
-    const error = err instanceof CustomError ? err : new CustomError();
+const errorHandler = (
+  err: CustomError,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const error = err instanceof CustomError ? err : new CustomError();
 
-    ctx.response.status = error.status;
-    ctx.body = error;
-  }
+  res.status(error.status).send(error);
 };
 
 export default errorHandler;

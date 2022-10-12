@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import {Request} from 'express';
 
 import CreateUser from '@application/use_cases/CreateUser';
 import UpdateUserPassword from '@application/use_cases/UpdateUserPassword';
@@ -15,13 +15,13 @@ class UserController {
     private readonly updateUserPassword: UpdateUserPassword
   ) {}
 
-  create(ctx: Koa.DefaultContext): Promise<void> {
-    const {name, email, password} = ctx.request.body;
+  create(request: Request): Promise<void> {
+    const {name, email, password} = request.body;
     return this.createUser.execute(name, email, password);
   }
 
-  updatePassword(ctx: Koa.DefaultContext): Promise<void> {
-    const {email, password} = ctx.request.body;
+  updatePassword(request: Request): Promise<void> {
+    const {email, password} = request.body;
     return this.updateUserPassword.execute(email, password);
   }
 }

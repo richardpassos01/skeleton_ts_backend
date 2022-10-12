@@ -8,7 +8,6 @@ class Database {
 
   constructor() {
     this.instance = Knex(Settings.database);
-    this.checkConnection();
   }
 
   async checkConnection(): Promise<void> {

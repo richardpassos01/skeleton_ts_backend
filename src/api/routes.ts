@@ -1,4 +1,4 @@
-import * as Router from '@koa/router';
+import {NextFunction, Request, Response, Router} from 'express';
 
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
@@ -14,44 +14,52 @@ import UserController from './user/UserController';
 
 export const PREFIX_API = '/api/v1';
 
-const router = new Router({
-  prefix: PREFIX_API,
-});
+const router = Router();
 
-router.get('/healthy-check', ctx => {
-  ctx.response.status = StatusCodes.OK;
-  ctx.body = ReasonPhrases.OK;
-});
+router.get('/healthy-check', (_req: Request, response: Response) =>
+  response.status(StatusCodes.OK).send(ReasonPhrases.OK)
+);
 
-router.post('/user/create', schemaValidator(createUserSchema), async ctx => {
-  const userController = container.get<UserController>(TYPES.UserController);
-  await userController.create(ctx);
-  ctx.response.status = StatusCodes.CREATED;
-  ctx.body = ReasonPhrases.CREATED;
-});
+router.post(
+  '/user/create',
+  schemaValidator(createUserSchema),
+  (request: Request, response: Response, next: NextFunction) => {
+    const userController = container.get<UserController>(TYPES.UserController);
+    userController
+      .create(request)
+      .then(() =>
+        response.status(StatusCodes.CREATED).send(ReasonPhrases.CREATED)
+      )
+      .catch(next);
+  }
+);
 
 router.patch(
   '/user/update-password',
   schemaValidator(updatePasswordSchema),
   authentication,
-  async ctx => {
+  (request: Request, response: Response, next: NextFunction) => {
     const userController = container.get<UserController>(TYPES.UserController);
-    await userController.updatePassword(ctx);
-    ctx.response.status = StatusCodes.NO_CONTENT;
-    ctx.body = ReasonPhrases.NO_CONTENT;
+    userController
+      .updatePassword(request)
+      .then(() =>
+        response.status(StatusCodes.NO_CONTENT).send(ReasonPhrases.NO_CONTENT)
+      )
+      .catch(next);
   }
 );
 
 router.post(
   '/authentication/authenticate',
   schemaValidator(updatePasswordSchema),
-  async ctx => {
+  (request: Request, response: Response, next: NextFunction) => {
     const authenticationController = container.get<AuthenticationController>(
       TYPES.AuthenticationController
     );
-    const result = await authenticationController.authenticate(ctx);
-    ctx.response.status = StatusCodes.OK;
-    ctx.body = result;
+    authenticationController
+      .authenticate(request)
+      .then(result => response.status(StatusCodes.OK).send(result))
+      .catch(next);
   }
 );
 

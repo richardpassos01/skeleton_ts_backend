@@ -1,4 +1,4 @@
-import * as Koa from 'koa';
+import {Request} from 'express';
 
 import AuthenticateUser from '@application/use_cases/AuthenticateUser';
 import {TYPES} from '@constants/types';
@@ -12,8 +12,8 @@ class AuthenticationController {
     private readonly authenticateUser: AuthenticateUser
   ) {}
 
-  authenticate(ctx: Koa.DefaultContext): Promise<Authentication> {
-    const {email, password} = ctx.request.body;
+  authenticate(request: Request): Promise<Authentication> {
+    const {email, password} = request.body;
     return this.authenticateUser.execute(email, password);
   }
 }
