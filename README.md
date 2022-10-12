@@ -11,3 +11,8 @@ Node >= 12.0.0
 
 # Testing
 * Running `npm test`
+
+# Main stack
+* Koa
+* SQLite
+* Inversify
