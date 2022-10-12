@@ -1,17 +1,17 @@
 import * as crypto from 'crypto';
-import {v4 as uuid} from 'uuid';
+import {ObjectId} from 'mongodb';
 import {InvalidPassword} from './error/UserErrors';
 
 export interface UserParams {
   name: string | undefined;
   email: string | undefined;
-  id: string;
+  id: ObjectId;
   salt: string | undefined;
   hash: string | undefined;
 }
 
 class User {
-  public id: string = uuid();
+  public id: ObjectId = new ObjectId();
   public name: string | undefined;
   public email: string | undefined;
   public salt: string = crypto.randomBytes(16).toString('hex');

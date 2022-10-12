@@ -17,10 +17,8 @@ class CreateUser {
       const user = new User({name, email} as UserParams);
       user.setPassword(password);
       await this.userRepository.create(user);
-    } catch (error: any) {
-      if (error.code === ErrorCode.UNIQUE_EXCEPTION) {
-        throw new UserAlreadyExists();
-      }
+    } catch {
+      throw new UserAlreadyExists();
     }
   }
 }

@@ -16,15 +16,13 @@ describe('userAPI', () => {
   const token = 'abc';
 
   beforeAll(async () => {
-    database = container.get<Database>(TYPES.Database);
-    await database.connection().migrate.latest();
-
     jest.spyOn(jwt, 'verify').mockImplementation((...params) => {});
+    database = container.get<Database>(TYPES.Database);
+    database.checkConnection();
   });
 
   afterAll(async () => {
-    await database.connection().migrate.rollback();
-    await database.connection().destroy();
+    database.connection().collection(Tables.USERS).deleteMany({});
 
     jest.clearAllMocks();
     server.close();
@@ -44,11 +42,10 @@ describe('userAPI', () => {
           })
           .expect(StatusCodes.CREATED);
 
-        const [data] = await database
+        const data = await database
           .connection()
-          .select('id')
-          .where('email', user.email)
-          .into(Tables.USERS);
+          .collection(Tables.USERS)
+          .findOne({email: user.email});
 
         expect(!!data).toBeTruthy();
       });

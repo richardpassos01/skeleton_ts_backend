@@ -1,24 +1,30 @@
 import {Settings} from '@settings';
 import {injectable} from 'inversify';
-import * as Knex from 'knex';
+import {Db, MongoClient} from 'mongodb';
+import Tables from './Tables';
 
 @injectable()
 class Database {
-  private instance: Knex;
+  private instance: MongoClient;
 
   constructor() {
-    this.instance = Knex(Settings.database);
-    this.checkConnection();
+    this.instance = new MongoClient(Settings.databaseStringConnection);
   }
 
-  async checkConnection(): Promise<void> {
-    return this.instance.select(1).then(() => {
+  checkConnection(): void {
+    this.instance.connect().then(() => {
       console.log('database connected!');
     });
   }
 
-  connection(): Knex {
-    return this.instance;
+  createIndexes(): void {
+    this.connection()
+      .collection(Tables.USERS)
+      .createIndex({email: 1}, {unique: true});
+  }
+
+  connection(): Db {
+    return this.instance.db(Settings.database);
   }
 }
 

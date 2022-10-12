@@ -14,16 +14,9 @@ export default class Settings {
     .get('ACCESS_TOKEN_EXPIRES_IN_HOURS')
     .default(24)
     .asIntPositive()}h`;
-  static database = {
-    client: 'sqlite3',
-    connection: path.resolve('./data', `database-${this.environment}.sqlite`),
-    migrations: {
-      directory: './src/infrastructure/database/migrations',
-      tableName: 'knex_migrations',
-    },
-    seeds: {
-      directory: './src/infrastructure/database/seeds',
-    },
-    useNullAsDefault: true,
-  };
+  static database = env.get('DATABASE').default('skeleton').asString();
+  static databaseStringConnection = env
+    .get('DATABASE_STRING_CONNECTION')
+    .default('mongodb://localhost:27017')
+    .asString();
 }

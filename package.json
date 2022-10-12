@@ -12,9 +12,8 @@
     "inversify": "^6.0.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.21",
-    "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
+    "mongodb": "^4.10.0",
     "morgan": "^1.10.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.2",
@@ -53,15 +52,9 @@
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run lint",
-    "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config  --forceExit --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test DATABASE=skeleton_test jest --setupFiles dotenv/config  --forceExit --detectOpenHandles",
     "start": "cross-env NODE_ENV=production ACCESS_TOKEN_SECRET=1 ACCESS_TOKEN_EXPIRES_IN_HOURS=24 PORT=9000 node build/src/api/server.js",
-    "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts",
-    "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
-    "migration:create": "npm run knex migrate:make",
-    "migration:up": "npm run knex migrate:latest",
-    "migration:down": "npm run knex migrate:rollback",
-    "seed:create": "npm run knex seed:make",
-    "seed:run": "npm run knex seed:run"
+    "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts"
   },
   "jest": {
     "transform": {

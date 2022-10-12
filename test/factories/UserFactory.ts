@@ -3,14 +3,14 @@ import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import User, {UserParams} from '@domain/user/User';
 import UserRepository from '@infrastructure/repositories/UserRepository';
-import {v4 as uuid} from 'uuid';
+import * as crypto from 'crypto';
 
 class UserFactory {
   user: User;
 
   constructor(
     public name = 'default user',
-    public email = `${uuid()}@email.com`,
+    public email = `${crypto.randomBytes(16).toString('hex')}@email.com`,
     public password = 'default pass'
   ) {
     this.user = new User({name, email} as UserParams);

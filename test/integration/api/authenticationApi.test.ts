@@ -3,7 +3,7 @@ import {PREFIX_API} from '@api/routes';
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import UserFactory from '@factories/UserFactory';
-import Database from '@infrastructure/database';
+import Database, {Tables} from '@infrastructure/database';
 import {StatusCodes} from 'http-status-codes';
 import 'reflect-metadata';
 import * as supertest from 'supertest';
@@ -15,12 +15,11 @@ describe('authenticationApi', () => {
 
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
-    await database.connection().migrate.latest();
+    database.checkConnection();
   });
 
   afterAll(async () => {
-    await database.connection().migrate.rollback();
-    await database.connection().destroy();
+    database.connection().collection(Tables.USERS).deleteMany({});
     server.close();
   });
 

@@ -12,25 +12,31 @@ class UserRepository implements UserRepositoryInterface {
   ) {}
 
   async create(user: User) {
-    await this.database.connection().insert(user).into(Tables.USERS);
+    const {id, ...data} = user;
+
+    await this.database
+      .connection()
+      .collection(Tables.USERS)
+      .insertOne({_id: id, ...data});
   }
 
   async update(user: User) {
     await this.database
       .connection()
-      .update(user)
-      .where('id', user.id)
-      .into(Tables.USERS);
+      .collection(Tables.USERS)
+      .updateOne({id: user.id}, {$set: user});
   }
 
   async findByEmail(email: string) {
     return this.database
       .connection()
-      .select('name', 'email', 'id', 'salt', 'hash')
-      .where('email', email)
-      .into(Tables.USERS)
-      .first()
-      .then((data: UserParams) => (data ? new User(data) : null));
+      .collection(Tables.USERS)
+      .findOne({email})
+      .then(data => {
+        if (!data) return null;
+        const {_id, ...user} = data;
+        return new User({id: _id, ...user} as UserParams);
+      });
   }
 }
 
