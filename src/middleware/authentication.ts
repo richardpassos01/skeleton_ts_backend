@@ -1,20 +1,13 @@
+import * as Koa from 'koa';
+
 import CustomError from '@domain/shared/error/CustomError';
 import ErrorCode from '@domain/shared/error/ErrorCode';
 import {Settings} from '@settings';
-import {NextFunction, Request, Response} from 'express';
 import {ReasonPhrases, StatusCodes} from 'http-status-codes';
 import * as jsonwebtoken from 'jsonwebtoken';
 
-interface AuthRequest extends Request {
-  user?: string | jsonwebtoken.JwtPayload;
-}
-
-const authentication = (
-  request: AuthRequest,
-  response: Response,
-  next: NextFunction
-): void => {
-  const authHeader = request.headers.authorization;
+const authentication = async (ctx: Koa.DefaultContext, next: Koa.Next) => {
+  const authHeader = ctx.headers.authorization;
 
   if (!authHeader) {
     throw new CustomError(
@@ -29,7 +22,7 @@ const authentication = (
   jsonwebtoken.verify(
     token,
     Settings.accessTokenSecret,
-    (err, decoded: any) => {
+    (err: any, decoded: any) => {
       if (err) {
         throw new CustomError(
           ReasonPhrases.FORBIDDEN,
@@ -37,7 +30,7 @@ const authentication = (
           StatusCodes.FORBIDDEN
         );
       }
-      const {email} = request.body;
+      const {email} = ctx.request.body;
 
       if (email && decoded.email !== email) {
         throw new CustomError(
@@ -47,7 +40,7 @@ const authentication = (
         );
       }
 
-      request.user = decoded;
+      ctx.request.user = decoded;
     }
   );
 

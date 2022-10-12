@@ -1,4 +1,5 @@
-import app, {PREFIX_API} from '@api/app';
+import app from '@api/app';
+import {PREFIX_API} from '@api/routes';
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import UserFactory from '@factories/UserFactory';
@@ -8,11 +9,12 @@ import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import * as supertest from 'supertest';
 
-const request = supertest(app.build());
-let database: Database;
-const token = 'abc';
-
 describe('userAPI', () => {
+  const server = app.listen();
+  const request = supertest(server);
+  let database: Database;
+  const token = 'abc';
+
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
     await database.connection().migrate.latest();
@@ -25,6 +27,7 @@ describe('userAPI', () => {
     await database.connection().destroy();
 
     jest.clearAllMocks();
+    server.close();
   });
 
   describe('createUser', () => {

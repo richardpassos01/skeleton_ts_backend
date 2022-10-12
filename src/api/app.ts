@@ -1,27 +1,15 @@
 import 'reflect-metadata';
 
-import container from '@dependencyInjectionContainer';
+import * as Koa from 'koa';
+
 import errorHandler from '@middleware/errorHandler';
-import * as compression from 'compression';
-import * as cors from 'cors';
-import * as express from 'express';
-import {ReasonPhrases, StatusCodes} from 'http-status-codes';
-import {InversifyExpressServer} from 'inversify-express-utils';
-import * as morgan from 'morgan';
+import * as bodyParser from 'koa-bodyparser';
+import routes from './routes';
 
-export const PREFIX_API = '/api/v1';
+const app = new Koa();
 
-export default new InversifyExpressServer(container, null, {
-  rootPath: PREFIX_API,
-})
-  .setConfig((application: express.Application) => {
-    application.use(express.json());
-    application.get(
-      '/healthy-check',
-      (_req: express.Request, res: express.Response) =>
-        res.status(StatusCodes.OK).send(ReasonPhrases.OK)
-    );
-  })
-  .setErrorConfig((application: express.Application) =>
-    application.use(errorHandler)
-  );
+app.use(bodyParser());
+app.use(errorHandler);
+app.use(routes.routes()).use(routes.allowedMethods()).use(routes.middleware());
+
+export default app;

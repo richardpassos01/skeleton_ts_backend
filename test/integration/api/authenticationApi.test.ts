@@ -1,4 +1,5 @@
-import app, {PREFIX_API} from '@api/app';
+import app from '@api/app';
+import {PREFIX_API} from '@api/routes';
 import {TYPES} from '@constants/types';
 import container from '@dependencyInjectionContainer';
 import UserFactory from '@factories/UserFactory';
@@ -7,10 +8,11 @@ import {StatusCodes} from 'http-status-codes';
 import 'reflect-metadata';
 import * as supertest from 'supertest';
 
-const request = supertest(app.build());
-let database: Database;
-
 describe('authenticationApi', () => {
+  const server = app.listen();
+  const request = supertest(server);
+  let database: Database;
+
   beforeAll(async () => {
     database = container.get<Database>(TYPES.Database);
     await database.connection().migrate.latest();
@@ -19,6 +21,7 @@ describe('authenticationApi', () => {
   afterAll(async () => {
     await database.connection().migrate.rollback();
     await database.connection().destroy();
+    server.close();
   });
 
   describe('authenticateUser', () => {

@@ -9,7 +9,7 @@ export class UserNotFound extends CustomError {
 }
 export class InvalidPassword extends CustomError {
   customCode = ErrorCode.UNAUTHORIZED;
-  message = ReasonPhrases.UNAUTHORIZED;
+  message = 'invalid email or password';
   status = StatusCodes.UNAUTHORIZED;
 }
 export class UserAlreadyExists extends CustomError {
