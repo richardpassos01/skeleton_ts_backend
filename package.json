@@ -1,4 +1,59 @@
 {
+  "name": "skeleton_ts_backend",
+  "version": "1.0.0",
+  "description": "This repository provides a backend Skeleton.",
+  "main": "server.js",
+  "scripts": {
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc && tsc-alias",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint",
+    "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config  --forceExit --detectOpenHandles",
+    "start": "cross-env NODE_ENV=production ACCESS_TOKEN_SECRET=1 ACCESS_TOKEN_EXPIRES_IN_HOURS=24 PORT=9000 node build/src/api/server.js",
+    "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts",
+    "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
+    "migration:create": "npm run knex migrate:make",
+    "migration:up": "npm run knex migrate:latest",
+    "migration:down": "npm run knex migrate:rollback",
+    "seed:create": "npm run knex seed:make",
+    "seed:run": "npm run knex seed:run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardpassos01/skeleton_ts_backend.git"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleNameMapper": {
+      "^@api/(.*)$": "<rootDir>/src/api/$1",
+      "^@application/(.*)$": "<rootDir>/src/application/$1",
+      "^@domain/(.*)$": "<rootDir>/src/domain/$1",
+      "^@infrastructure/(.*)$": "<rootDir>/src/infrastructure/$1",
+      "^@constants/(.*)$": "<rootDir>/src/constants/$1",
+      "^@middleware/(.*)$": "<rootDir>/src/middleware/$1",
+      "^@factories/(.*)$": "<rootDir>/test/factories/$1",
+      "^@settings": "<rootDir>/src/settings/index",
+      "^@dependencyInjectionContainer": "<rootDir>/src/DependencyInjectionContainer"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  },
+  "keywords": [],
+  "author": "Richard Passos (https://www.linkedin.com/in/richard-henrique-451a8979/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/richardpassos01/skeleton_ts_backend/issues"
+  },
+  "homepage": "https://github.com/richardpassos01/skeleton_ts_backend#readme",
   "dependencies": {
     "@koa/router": "^12.0.0",
     "body-parser": "^1.20.1",
@@ -23,14 +78,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/compression": "^1.7.2",
-    "@types/cors": "^2.8.12",
     "@types/jest": "^29.1.2",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/koa": "^2.13.5",
     "@types/koa__router": "^12.0.0",
     "@types/koa-bodyparser": "^4.3.8",
-    "@types/morgan": "^1.9.3",
     "@types/node": "^14.18.31",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
@@ -44,45 +96,5 @@
     "ts-node-dev": "^1.0.0-pre.62",
     "tsconfig-paths": "^3.9.0",
     "typescript": "~4.7.0"
-  },
-  "scripts": {
-    "lint": "gts lint",
-    "clean": "gts clean",
-    "compile": "tsc && tsc-alias",
-    "fix": "gts fix",
-    "prepare": "npm run compile",
-    "pretest": "npm run compile",
-    "posttest": "npm run lint",
-    "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config  --forceExit --detectOpenHandles",
-    "start": "cross-env NODE_ENV=production ACCESS_TOKEN_SECRET=1 ACCESS_TOKEN_EXPIRES_IN_HOURS=24 PORT=9000 node build/src/api/server.js",
-    "development": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify -r dotenv/config src/api/server.ts",
-    "knex": "node -r dotenv/config ./node_modules/knex/bin/cli.js",
-    "migration:create": "npm run knex migrate:make",
-    "migration:up": "npm run knex migrate:latest",
-    "migration:down": "npm run knex migrate:rollback",
-    "seed:create": "npm run knex seed:make",
-    "seed:run": "npm run knex seed:run"
-  },
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleNameMapper": {
-      "^@api/(.*)$": "<rootDir>/src/api/$1",
-      "^@application/(.*)$": "<rootDir>/src/application/$1",
-      "^@domain/(.*)$": "<rootDir>/src/domain/$1",
-      "^@infrastructure/(.*)$": "<rootDir>/src/infrastructure/$1",
-      "^@constants/(.*)$": "<rootDir>/src/constants/$1",
-      "^@middleware/(.*)$": "<rootDir>/src/middleware/$1",
-      "^@factories/(.*)$": "<rootDir>/test/factories/$1",
-      "^@settings": "<rootDir>/src/settings/index",
-      "^@dependencyInjectionContainer": "<rootDir>/src/DependencyInjectionContainer"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ]
   }
 }
